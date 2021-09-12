@@ -21,6 +21,10 @@
         font-size: 100px;
       }
 
+      h2 {
+        font-size: 20px;
+      }
+
       button {
         width: 50%;
         height: 80px;
@@ -39,6 +43,11 @@
       <button id="btn1" onclick="myBtn1()">Dome Off</button>
       <button id="btn2" onclick="myBtn2()">Music Off</button>
       <button id="btn3" onclick="myBtn3()">Peak Off</button>
+    </div>
+    <div>
+      <h2>
+        <p id="startTime"></p>
+      </h2>
     </div>
 
     <!-- =========================== Time Script ========================== -->
@@ -152,13 +161,16 @@
 
       function myBtn2() {
         var x = document.getElementById("btn2");
+        let startTimeVal = getNowTime()
+
         if (x.innerHTML === "Music Off") {
           x.innerHTML = "Music On";
           x.style = "background-color: green;";
+          document.getElementById("startTime").innerText = "Start Music Time : " + startTimeVal;
           return washingtonRef
             .update({
               music_state: true,
-              startTime: getNowTime(),
+              startTime: startTimeVal,
             })
             .then(() => {
               console.log("Document successfully updated!");
