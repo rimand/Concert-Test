@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no "
+    /> -->
+    <meta name="HandheldFriendly" content="true" />
+    <title>Document</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        display: block;
+      }
+      h1 {
+        font-size: 100px;
+      }
+
+      button {
+        width: 50%;
+        height: 80px;
+        margin-bottom: 20px;
+      }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  </head>
+  <!-- ============================================================================= BODY ====================================================================== -->
+  <body>
+    <div>
+      <h1>Concert Control</h1>
+    </div>
+    <div>
+      <button id="btn1" onclick="myBtn1()">Dome Off</button>
+      <button id="btn2" onclick="myBtn2()">Music Off</button>
+      <button id="btn3" onclick="myBtn3()">Peak Off</button>
+    </div>
+
+    <!-- =========================== Time Script ========================== -->
+    <script>
+      function convertDifftoTime_all(mdiff) {
+        var msec = mdiff;
+        var hh = Math.floor(msec / 1000 / 60 / 60);
+        msec -= hh * 1000 * 60 * 60;
+        var mm = Math.floor(msec / 1000 / 60);
+        msec -= mm * 1000 * 60;
+        var ss = Math.floor(msec / 1000);
+        msec -= ss * 1000;
+        return hh + ":" + mm + ":" + ss;
+      }
+
+      function convertDifftoTime(mdiff) {
+        var msec = mdiff;
+        var ss = Math.floor(msec / 1000);
+        msec -= ss * 1000;
+        return "" + ss;
+      }
+
+      function getNowTime() {
+        const strTime = new Date().toLocaleString("en-GB", {
+          timeZone: "Asia/Bangkok",
+        });
+
+        let date1 = new Date(strTime);
+        console.log(date1.getTime());
+        return strTime;
+      }
+
+      var time = new Date();
+      console.log(time.getTime());
+
+      // const strTime = new Date().toLocaleString("en-US", {
+      //   timeZone: "Asia/Bangkok",
+      // });
+
+      const strTime = new Date().toLocaleString("en-GB", {
+        timeZone: "Asia/Bangkok",
+      });
+      console.log(strTime);
+
+      // let date1 = new Date(strTime);
+      // console.log(date1.getTime());
+
+      // let date2 = new Date("09/12/2021 12:00:00");
+
+      // var diff = time.getTime() - date2.getTime();
+      // console.log(convertDifftoTime(diff));
+    </script>
+
+    <!-- =========================== firebase config Script  ========================== -->
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBitxUJHB9F9Oxyl9S9XSFn9GEDLajUdJM",
+        authDomain: "test-gap-alan.firebaseapp.com",
+        databaseURL:
+          "https://test-gap-alan-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "test-gap-alan",
+        storageBucket: "test-gap-alan.appspot.com",
+        messagingSenderId: "835705998893",
+        appId: "1:835705998893:web:e43307e321ac47f5f4b2a4",
+        measurementId: "G-Q5QFH8DZZT",
+      };
+
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      let db = firebase.firestore();
+      let washingtonRef = db.collection("Controller").doc("Concert01");
+    </script>
+
+    <!-- =========================== Button Script  ========================== -->
+
+    <script>
+      let a = 10;
+      function myBtn1() {
+        var x = document.getElementById("btn1");
+        if (x.innerHTML === "Dome Off") {
+          x.innerHTML = "Dome On";
+          x.style = "background-color: green;";
+          return washingtonRef
+            .update({
+              dome_state: true,
+            })
+            .then(() => {
+              console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+        } else {
+          x.innerHTML = "Dome Off";
+          x.style = "background-color: white;";
+          return washingtonRef
+            .update({
+              dome_state: false,
+            })
+            .then(() => {
+              console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+        }
+      }
+
+      function myBtn2() {
+        var x = document.getElementById("btn2");
+        if (x.innerHTML === "Music Off") {
+          x.innerHTML = "Music On";
+          x.style = "background-color: green;";
+          return washingtonRef
+            .update({
+              music_state: true,
+              startTime: getNowTime(),
+            })
+            .then(() => {
+              console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+        } else {
+          x.innerHTML = "Music Off";
+          x.style = "background-color: white;";
+          return washingtonRef
+            .update({
+              music_state: false,
+            })
+            .then(() => {
+              console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+        }
+      }
+
+      function myBtn3() {
+        var x = document.getElementById("btn3");
+        if (x.innerHTML === "Peak Off") {
+          x.innerHTML = "Peak On";
+          x.style = "background-color: green;";
+          return washingtonRef
+            .update({
+              peak_state: true,
+            })
+            .then(() => {
+              console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+        } else {
+          x.innerHTML = "Peak Off";
+          x.style = "background-color: white;";
+          return washingtonRef
+            .update({
+              peak_state: false,
+            })
+            .then(() => {
+              console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+        }
+      }
+    </script>
+
+    <!-- =========================== Fix iphone monitor ========================== -->
+
+    <script>
+      document.addEventListener(
+        "touchmove",
+        function (event) {
+          if (event.scale !== 1) {
+            event.preventDefault();
+          }
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
