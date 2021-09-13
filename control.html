@@ -81,7 +81,7 @@
       }
 
       var time = new Date();
-      console.log(time.getTime());
+      // console.log(time.getTime());
 
       // const strTime = new Date().toLocaleString("en-US", {
       //   timeZone: "Asia/Bangkok",
@@ -90,7 +90,7 @@
       const strTime = new Date().toLocaleString("en-GB", {
         timeZone: "Asia/Bangkok",
       });
-      console.log(strTime);
+      // console.log(strTime);
 
       // let date1 = new Date(strTime);
       // console.log(date1.getTime());
@@ -161,12 +161,13 @@
 
       function myBtn2() {
         var x = document.getElementById("btn2");
-        let startTimeVal = getNowTime()
+        let startTimeVal = getNowTime();
 
         if (x.innerHTML === "Music Off") {
           x.innerHTML = "Music On";
           x.style = "background-color: green;";
-          document.getElementById("startTime").innerText = "Start Music Time : " + startTimeVal;
+          document.getElementById("startTime").innerText =
+            "Start Music Time : " + startTimeVal;
           return washingtonRef
             .update({
               music_state: true,
@@ -242,6 +243,31 @@
         },
         false
       );
+    </script>
+
+    <!-- =========================== Get Time API ========================== -->
+
+    <script>
+      // async function getTime() {
+      //   try {
+      //     let res = await (
+      //       "https://reqres.in/api/users?page=2"
+      //     );
+      //     let json = await res.json();
+      //     let users = json.data;
+      //     console.log(users)
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // }
+      // getTime();
+      fetch('https://www.timeapi.io/api/Time/current/zone?timeZone=Asia/Bangkok')
+        .then(function (response) {
+          return response.json(); // แปลงข้อมูลที่ได้เป็น json
+        })
+        .then(function (data) {
+          console.log(data); // แสดงข้อมูล JSON จาก then ข้างบน
+        });
     </script>
   </body>
 </html>
